@@ -1,0 +1,28 @@
+{
+  "name": "amhere_backend",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000A\u0000m\u0000h\u0000e\u0000r\u0000e\u0000_\u0000B\u0000a\u0000c\u0000k\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaPhanBaoMinh/Amhere_Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HaPhanBaoMinh/Amhere_Backend/issues"
+  },
+  "homepage": "https://github.com/HaPhanBaoMinh/Amhere_Backend#readme"
+}
