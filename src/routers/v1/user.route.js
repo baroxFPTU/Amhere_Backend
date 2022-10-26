@@ -1,20 +1,13 @@
 import express from 'express'
-import {
-  addNewUser,
-  getAllUser,
-  getUserByRole,
-  getUserByName,
-  getUserByUId,
-  getUserById
-} from '~/controllers/user.controller'
+import { UserController } from '~/controllers/user.controller'
 
 const UserRoute = express.Router()
 
-UserRoute.get('/:userid', getUserByUId)
-UserRoute.get('/userid/:userid', getUserById)
-UserRoute.get('/filter/role/:role', getUserByRole)
-UserRoute.get('/filter/name/:name', getUserByName)
-UserRoute.get('/', getAllUser)
-UserRoute.post('/', addNewUser)
+UserRoute.get('/:userid', UserController.getUserByUId)
+UserRoute.get('/userid/:userid', UserController.getUserById)
+UserRoute.get('/filter/role/:role', UserController.getUserByRole)
+UserRoute.get('/filter/name/:name', UserController.getUserByName)
+UserRoute.get('/', UserController.findAll)
+UserRoute.post('/', UserController.addNewUser)
 
 export default UserRoute

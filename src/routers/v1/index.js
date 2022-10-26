@@ -1,9 +1,15 @@
 import express from 'express'
+import AuthRoute from './auth.route'
 import { ChatRoute } from './chat.route'
 import ConversationRouter from './conversation.route.js'
 import UserRoute from './user.route'
 
 const router = express.Router()
+
+/**
+ * Auth APIs
+ */
+router.use('/auth', AuthRoute)
 
 /**
  * User APIs

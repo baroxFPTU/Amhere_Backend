@@ -25,18 +25,18 @@ const bootServer = () => {
     })
   )
 
-  app.get('*', (req, res) => {
-    res.send('<h1>Hello, welcome to Amhere APIs</h1>')
-  })
-
   app.use(
-    'api/v1',
+    '/api',
     (req, res, next) => {
       res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate')
       next()
     },
     apiV1
   )
+
+  // app.get('*', (req, res) => {
+  //   res.send('<h1>Hello, welcome to AmHere APIs</h1>')
+  // })
 
   const server = app.listen(env.PORT, env.HOST, () => {
     console.log(`Server running on: http://${env.HOST}:${env.PORT}`)

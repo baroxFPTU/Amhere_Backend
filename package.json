@@ -11,7 +11,9 @@
     "helmet": "^6.0.0",
     "mongoose": "^6.6.5",
     "morgan": "^1.10.0",
-    "socket.io": "^4.5.3"
+    "socket.io": "^4.5.3",
+    "url-parse": "^1.5.10",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
