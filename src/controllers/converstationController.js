@@ -1,10 +1,10 @@
-const Converstation = require("../Models/converstationSchema");
-const mongoose = require("mongoose");
-const User = require("../Models/userSchema");
+import Converstation from '~/models/converstationSchema';
+import mongoose from 'mongoose';
+import User from '../models/userSchema';
 const ObjectId = mongoose.Types.ObjectId;
 
 const getConverstationOfMember = async (req, res) => {
-  const userid = await req.params["userid"];
+  const userid = await req.params['userid'];
   try {
     ConverstatioinInfo = await Converstation.findOne({ member_id: userid });
     res.status(200).json(ListenerInfo);
@@ -14,7 +14,7 @@ const getConverstationOfMember = async (req, res) => {
 };
 
 const getConverstationOfListener = async (req, res) => {
-  const userid = await req.params["userid"];
+  const userid = await req.params['userid'];
   try {
     ConverstatioinInfo = await Converstation.findOne({ listener_id: userid });
     res.status(200).json(ListenerInfo);
@@ -78,7 +78,7 @@ const getChatConverstationForListener = async (req, res) => {
   res.status(200).json(listUser);
 };
 
-module.exports = {
+export {
   getConverstationOfMember,
   getConverstationOfListener,
   getChatConverstation,

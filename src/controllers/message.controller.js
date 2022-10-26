@@ -1,6 +1,6 @@
-const Message = require("../Models/messageSchema");
-const Converstation = require("../Models/converstationSchema");
-var ObjectId = require("mongodb").ObjectId;
+import Message from '../models/messageSchema';
+import Converstation from '../models/converstationSchema';
+import ObjectId from 'mongodb';
 
 const getAllMessage = async (req, res) => {
   try {
@@ -40,9 +40,9 @@ const addMessage = async (req, res) => {
     });
 
     if (data) {
-      return res.json({ msg: "Message addedd successfully" });
+      return res.json({ msg: 'Message addedd successfully' });
     }
-    return res.json({ msg: "Failed to addedd message to database" });
+    return res.json({ msg: 'Failed to addedd message to database' });
   } catch (error) {
     console.log(error);
     res.status(400).send();
@@ -74,4 +74,4 @@ const addMessageFun = async ({ receiver, sender, message }) => {
   });
 };
 
-module.exports = { getAllMessage, addMessage, addMessageFun };
+export const MessageController = { getAllMessage, addMessage, addMessageFun };

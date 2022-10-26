@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 const { Schema } = mongoose;
 
 const MessageSchema = new Schema({
@@ -11,7 +12,5 @@ const MessageSchema = new Schema({
   receiver: String,
 });
 
-const myDB = mongoose.connection.useDb("User_DB");
-const Message = myDB.model("Message", MessageSchema);
-
-module.exports = Message;
+const myDB = mongoose.connection.useDb('User_DB');
+export const Message = myDB.model('Message', MessageSchema);

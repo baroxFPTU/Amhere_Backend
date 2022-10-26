@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const listenerSchema = new Schema({
@@ -8,7 +8,5 @@ const listenerSchema = new Schema({
   updated_at: { type: Date },
 });
 
-const myDB = mongoose.connection.useDb("User_DB");
-const Listener = myDB.model("listener", listenerSchema);
-
-module.exports = Listener;
+const myDB = mongoose.connection.useDb('User_DB');
+export const Listener = myDB.model('listener', listenerSchema);

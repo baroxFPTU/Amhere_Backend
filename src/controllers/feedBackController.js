@@ -1,7 +1,7 @@
-const feedBack = require("../Models/feedBackSchema");
+import feedBack from '../Models/feedBackSchema';
 
 const getFeedBackListener = async (req, res) => {
-  const userid = await req.params["userid"];
+  const userid = await req.params['userid'];
 
   try {
     const feedBackList = await feedBack.find({ _id: userid });
@@ -11,4 +11,4 @@ const getFeedBackListener = async (req, res) => {
   }
 };
 
-module.exports = { getFeedBackListener };
+export { getFeedBackListener };

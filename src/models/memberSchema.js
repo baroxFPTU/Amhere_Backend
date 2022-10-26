@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 const { Schema } = mongoose;
 
 const memberSchema = new Schema({
@@ -8,7 +9,5 @@ const memberSchema = new Schema({
   updated_at: { type: Date },
 });
 
-const myDB = mongoose.connection.useDb("User_DB");
-const Member = myDB.model("member", memberSchema);
-
-module.exports = Member;
+const myDB = mongoose.connection.useDb('User_DB');
+export const Member = myDB.model('member', memberSchema);

@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -13,7 +14,5 @@ const userSchema = new Schema({
   uid: String,
 });
 
-const myDB = mongoose.connection.useDb("User_DB");
-const User = myDB.model("user", userSchema);
-
-module.exports = User;
+const myDB = mongoose.connection.useDb('User_DB');
+export const User = myDB.model('user', userSchema);
