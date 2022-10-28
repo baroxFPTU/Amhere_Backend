@@ -99,40 +99,39 @@ const findAll = async (req, res) => {
 
 const addNewUser = async (req, res) => {
   const user = await { ...req.body }
-  const userSave = new User(user)
 
-  console.log(user)
+  UserController.add(user)
+  // const userSave = new User(user)
 
-  const curentUser = await User.findOne({ uid: user.uid })
+  // console.log(user)
+
+  // const curentUser = await User.findOne({ uid: user.uid })
   try {
-    if (!curentUser) {
-      if (user.active_role == 'listener') {
-        const categories = user.categories
-        const memberSave = new Listener({
-          user_id: userSave._id,
-          categories: categories
-        })
-        userSave.active_role_id = memberSave._id
-        console.log(userSave)
-        await memberSave.save()
-      }
-
-      if (user.active_role == 'member') {
-        const categories = user.categories
-        const memberSave = new Member({
-          user_id: userSave._id,
-          categories: categories
-        })
-        userSave.active_role_id = memberSave._id
-        console.log(userSave)
-        await memberSave.save()
-      }
-
-      await userSave.save()
-      res.status(200).send(userSave)
-    }
-
-    res.status(200).send(curentUser)
+    //   if (!curentUser) {
+    //     if (user.active_role == 'listener') {
+    //       const categories = user.categories
+    //       const memberSave = new Listener({
+    //         user_id: userSave._id,
+    //         categories: categories
+    //       })
+    //       userSave.active_role_id = memberSave._id
+    //       console.log(userSave)
+    //       await memberSave.save()
+    //     }
+    //     if (user.active_role == 'member') {
+    //       const categories = user.categories
+    //       const memberSave = new Member({
+    //         user_id: userSave._id,
+    //         categories: categories
+    //       })
+    //       userSave.active_role_id = memberSave._id
+    //       console.log(userSave)
+    //       await memberSave.save()
+    //     }
+    //     await userSave.save()
+    //     res.status(200).send(userSave)
+    //   }
+    // res.status(200).send(curentUser)
   } catch (error) {
     console.log(error)
     res.status(400).send()

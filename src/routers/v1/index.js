@@ -2,6 +2,7 @@ import express from 'express'
 import AuthRoute from './auth.route'
 import { ChatRoute } from './chat.route'
 import ConversationRouter from './conversation.route.js'
+import RoleRoute from './role.route'
 import UserRoute from './user.route'
 
 const router = express.Router()
@@ -25,6 +26,11 @@ router.use('/conversations', ConversationRouter)
  * Chat APIs
  */
 router.use('/chat', ChatRoute)
+
+/**
+ * Role APIs
+ */
+router.use('/roles', RoleRoute)
 
 /**
  * Root
