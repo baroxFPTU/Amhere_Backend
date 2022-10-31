@@ -1,7 +1,7 @@
-const Listener = require("../Models/listenerSchema");
+import Listener from '../models/listenerSchema';
 
 const getListenerById = async (req, res) => {
-  const listenerId = await req.params["listenerid"];
+  const listenerId = await req.params['listenerid'];
   try {
     const ListenerInfo = await Listener.findOne({ _id: listenerId });
     res.status(200).json(ListenerInfo);
@@ -21,4 +21,4 @@ const addNewListener = async (req, res) => {
   }
 };
 
-module.exports = { getListenerById, addNewListener };
+export { getListenerById, addNewListener };

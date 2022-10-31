@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+import mongoose, { Schema } from 'mongoose'
+import { env } from '../configs/environment'
 
 const userSchema = new Schema({
   email: String,
@@ -10,10 +10,8 @@ const userSchema = new Schema({
   active_role: String,
   active_role_id: String,
   categories: Array,
-  uid: String,
-});
+  uid: String
+})
 
-const myDB = mongoose.connection.useDb("User_DB");
-const User = myDB.model("user", userSchema);
-
-module.exports = User;
+const myDB = mongoose.connection.useDb(env.DB_NAME)
+export const User = myDB.model('user', userSchema)

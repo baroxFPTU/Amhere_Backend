@@ -1,7 +1,7 @@
-const Member = require("../Models/memberSchema");
+import Member from '../models/memberSchema';
 
 const getMemberById = async (req, res) => {
-  const memberid = await req.params["memberid"];
+  const memberid = await req.params['memberid'];
   try {
     const memberInfo = await Member.findOne({ _id: memberid });
     res.status(200).json(memberInfo);
@@ -21,4 +21,4 @@ const addNewMember = async (req, res) => {
   }
 };
 
-module.exports = { getMemberById, addNewMember };
+export { getMemberById, addNewMember };
