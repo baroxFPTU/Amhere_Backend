@@ -2,17 +2,30 @@ import mongoose from 'mongoose'
 import { AuthModel } from '../models/auth.model'
 
 export const AuthService = {
-  login: async (uid) => {
+  loginWithPassword: async (uid) => {
     try {
-      return await AuthModel.login(uid)
+      return await AuthModel.loginWithPassword(uid)
     } catch (error) {
       throw error
     }
   },
-  register: async (user) => {
+  loginWithProvider: async (user, providerType) => {
+    try {
+      console.log({ user })
+      return await AuthModel.loginWithProvider({
+        nickname: user.name || user.displayName,
+        email: user.email,
+        uid: user.user_id,
+        photoURL: user.picture
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  registerWithPassword: async (user) => {
     try {
       user.role_id = mongoose.Types.ObjectId(user.role_id)
-      return await AuthModel.register(user)
+      return await AuthModel.registerWithPassword(user)
     } catch (error) {
       throw error
     }
