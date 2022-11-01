@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
 import { appDB, userCollection } from '../configs/db'
 import uniqueValidator from 'mongoose-unique-validator'
+import * as yup from 'yup'
 import { env } from '../configs/environment'
 import { RoleModel } from './role.model'
+import moment from 'moment'
 
 const { Schema } = mongoose
 
@@ -23,6 +25,29 @@ const userSchema = new Schema(
     collection: 'users'
   }
 )
+
+export const userSchemaYup = yup.object().shape({
+  uid: yup.string().required('uid is required'),
+  nickname: yup.string().required(),
+  birthday: yup.date(),
+  phone: yup.string().nullable(),
+  email: yup.string().required(),
+  photoURL: yup.string().nullable(),
+  role_id: yup.string().length(24),
+  categories: yup.array(),
+  created_at: yup
+    .date()
+    .transform((value, originalValue) => {
+      if (this.isType(value)) {
+        return value
+      }
+      const result = moment(originalValue).toDate()
+      return result
+    })
+    .default(moment(Date.now()).toDate()),
+  updated_at: yup.date().nullable()
+})
+
 userSchema.plugin(uniqueValidator)
 
 export const User = appDB.model('User', userSchema)
@@ -30,7 +55,7 @@ export const User = appDB.model('User', userSchema)
 export const UserModel = {
   add: async (user) => {
     try {
-      const { uid, nickname, email, phone, photoURL, birthday, role_id } = user
+      const { uid, nickname, email, phone, photoURL, birthday, role_id = null } = user
       const createdUser = new User({
         uid,
         nickname,
@@ -54,7 +79,7 @@ export const UserModel = {
     return await User.find()
   },
   findOneByUid: async (uid) => {
-    return await User.findOne({ uid })
+    return await User.findOne({ uid: uid })
   }
 }
 
@@ -62,11 +87,11 @@ export async function addRoleData(user) {
   try {
     if (!user) throw new Error('Cannot add role for user')
     const addedUser = user
-    const roleData = await RoleModel.findOne(addedUser.role_id)
-    if (!roleData) throw new Error('RoleID is not found')
+    const roleData = addedUser.role_id ? await RoleModel.findOne(addedUser.role_id) : null
     addedUser.role_data = roleData
-    delete addedUser.role_id
-
+    if (user.role_id) {
+      delete addedUser.role_id
+    }
     return addedUser
   } catch (error) {
     throw error
