@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/5fa1f5d4-1b50-4e37-94a0-c98bd3449429/AppServices/subscriptions/5fa1f5d4-1b50-4e37-94a0-c98bd3449429/resourceGroups/Amhere/providers/Microsoft.Web/sites/AmhereServer",
+  "appService.deploySubpath": "."
+}
