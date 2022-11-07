@@ -34,7 +34,7 @@
     "clean": "del build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
     "start": "node ./build/src/index.js",
-    "build": "npm run clean && npm run build-babel",
+    "build": "npm run build-babel",
     "production": "npm run build && node ./build/src/index.js",
     "dev": "nodemon --exec babel-node --es-module-specifier-resolution=node ./src/index.js"
   },
