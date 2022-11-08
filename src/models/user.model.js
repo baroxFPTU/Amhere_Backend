@@ -75,8 +75,10 @@ export const UserModel = {
       throw error
     }
   },
-  findAll: async () => {
-    return await User.find()
+  findAll: async (roleSlug) => {
+    const roleData = await RoleModel.findOne({ slug: roleSlug })
+    console.log(roleData)
+    return await User.find({ role_id: roleData._id })
   },
   findOneByUid: async (uid) => {
     return await User.findOne({ uid: uid })

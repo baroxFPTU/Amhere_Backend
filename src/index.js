@@ -34,31 +34,68 @@ const bootServer = () => {
     apiV1
   )
 
-  // app.get('*', (req, res) => {
-  //   res.send('<h1>Hello, welcome to AmHere APIs</h1>')
-  // })
-
   const server = app.listen(env.PORT, env.HOST, () => {
     console.log(`Server running on: http://${env.HOST}:${env.PORT}`)
   })
 
-  const io = new Server(server)
+  let onlineUsers = []
+  let tempMessagesStorage = []
 
-  const onlineUsers = new Map()
+  const io = new Server(server, {
+    cors: {
+      origin: env.SOCKET_CONNECTOR
+    }
+  })
+
+  // io.use((socket, next) => {
+  //   const { uid, role_data } = socket.handshake.auth
+  //   if (!uid) {
+  //     return next(new Error('invalid uid'))
+  //   }
+  //   socket.user = {
+  //     uid: uid,
+  //     role_data: role_data
+  //   }
+  //   next()
+  // })
 
   io.on('connection', (socket) => {
-    socket.on('add-user', (userId) => {
-      onlineUsers.set(userId, socket.id)
+    socket.on('disconnect', (roleSlug) => {
+      console.log(socket.id)
+      onlineUsers = onlineUsers.filter((user) => user.socket_id !== socket.id)
+      console.log('out ', onlineUsers)
     })
-    socket.on('send-msg', async (data) => {
-      const sendToUserSocket = onlineUsers.get(data.receiver)
+    socket.on('client-auth', (auth) => {
+      const tempRoom = 'room-1'
+      socket.join(tempRoom)
+      socket.room = tempRoom
+      socket.user = auth
+      if (onlineUsers.findIndex((user) => user.uid === auth.uid) === -1) {
+        onlineUsers.push({
+          ...auth,
+          socket_id: socket.id
+        })
 
-      console.log(data)
+        const onlineListeners = onlineUsers.filter(
+          (user) => user.role_data.slug === 'nguoi-lang-nghe'
+        )
+        const onlineTellers = onlineUsers.filter(
+          (user) => user.role_data.slug === 'nguoi-ke-chuyen'
+        )
 
-      await MessageController.addMessageFun(data)
-      if (sendToUserSocket) {
-        socket.to(sendToUserSocket).emit('msg-receive', data)
+        io
+        io.sockets.emit('server-update-online-listeners', onlineListeners)
+        io.sockets.emit('server-update-online-tellers', onlineTellers)
       }
+    })
+
+    socket.on('client-send-message', (data) => {
+      tempMessagesStorage.push(data)
+      io.sockets.in(socket.room).emit('server-exchange-message', data)
+    })
+
+    socket.on('client-get-conversation-message', (roomId) => {
+      socket.emit('server-send-conversation-message', tempMessagesStorage)
     })
   })
 }

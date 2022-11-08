@@ -8,6 +8,7 @@ export const AuthModel = {
       const response = await UserModel.findOneByUid(uid)
       const addedRoleUser = await addRoleData(response)
       return {
+        id: uid,
         role_data: addedRoleUser.role_data,
         nickname: addedRoleUser.nickname,
         photoURL: addedRoleUser.photoURL
@@ -25,6 +26,7 @@ export const AuthModel = {
       }
       const addedRoleUser = await addRoleData(userInstance)
       return {
+        // insert user id
         role_data: addedRoleUser.role_data,
         nickname: addedRoleUser.nickname,
         photoURL: addedRoleUser.photoURL
