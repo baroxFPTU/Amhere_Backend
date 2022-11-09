@@ -69,7 +69,6 @@ export const UserModel = {
       const response = (await createdUser.save()).toObject()
       const addedRoleUser = await addRoleData(response)
 
-      console.log({ addedRoleUser })
       return addedRoleUser
     } catch (error) {
       throw error
@@ -77,7 +76,6 @@ export const UserModel = {
   },
   findAll: async (roleSlug) => {
     const roleData = await RoleModel.findOne({ slug: roleSlug })
-    console.log(roleData)
     return await User.find({ role_id: roleData._id })
   },
   findOneByUid: async (uid) => {

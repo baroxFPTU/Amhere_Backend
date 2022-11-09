@@ -11,7 +11,6 @@ export const AuthService = {
   },
   loginWithProvider: async (user, providerType) => {
     try {
-      console.log({ user })
       return await AuthModel.loginWithProvider({
         nickname: user.name || user.displayName,
         email: user.email,

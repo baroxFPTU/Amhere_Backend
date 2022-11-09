@@ -1,15 +1,7 @@
 import express from 'express'
-import {
-  getConverstationOfMember,
-  getConverstationOfListener,
-  getChatConverstation,
-  getChatConverstationForListener
-} from '../../controllers/converstationController'
+import { ConversationController } from '../../controllers/conversation.controller'
 const ConversationRoute = express.Router()
 
-// ConversationRoute.get("/member/:userid", getConverstationOfMember);
-// ConversationRoute.get("/listener/:userid", getConverstationOfListener);
-ConversationRoute.get('/listener', getChatConverstationForListener)
-ConversationRoute.get('/', getChatConverstation)
+ConversationRoute.get('/', ConversationController.getChatWith)
 
 export default ConversationRoute

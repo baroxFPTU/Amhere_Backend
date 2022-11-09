@@ -47,28 +47,14 @@ const bootServer = () => {
     }
   })
 
-  // io.use((socket, next) => {
-  //   const { uid, role_data } = socket.handshake.auth
-  //   if (!uid) {
-  //     return next(new Error('invalid uid'))
-  //   }
-  //   socket.user = {
-  //     uid: uid,
-  //     role_data: role_data
-  //   }
-  //   next()
-  // })
-
   io.on('connection', (socket) => {
     socket.on('disconnect', (roleSlug) => {
       console.log(socket.id)
       onlineUsers = onlineUsers.filter((user) => user.socket_id !== socket.id)
       console.log('out ', onlineUsers)
     })
+
     socket.on('client-auth', (auth) => {
-      const tempRoom = 'room-1'
-      socket.join(tempRoom)
-      socket.room = tempRoom
       socket.user = auth
       if (onlineUsers.findIndex((user) => user.uid === auth.uid) === -1) {
         onlineUsers.push({
@@ -83,19 +69,40 @@ const bootServer = () => {
           (user) => user.role_data.slug === 'nguoi-ke-chuyen'
         )
 
-        io
         io.sockets.emit('server-update-online-listeners', onlineListeners)
         io.sockets.emit('server-update-online-tellers', onlineTellers)
       }
     })
 
+    socket.on('client-join-room', (roomId) => {
+      console.log({ roomId })
+      socket.join(roomId)
+      socket.room = roomId
+    })
+
     socket.on('client-send-message', (data) => {
-      tempMessagesStorage.push(data)
-      io.sockets.in(socket.room).emit('server-exchange-message', data)
+      const isExistRoomMessage = tempMessagesStorage.find(
+        (roomMessage) => roomMessage.id === socket.room
+      )
+      if (!isExistRoomMessage) {
+        tempMessagesStorage.push({
+          id: socket.room,
+          messages: [data]
+        })
+      } else {
+        isExistRoomMessage.messages.push(data)
+      }
+      console.log(tempMessagesStorage)
+      if (socket.room) {
+        io.sockets.in(socket.room).emit('server-exchange-message', data)
+      }
     })
 
     socket.on('client-get-conversation-message', (roomId) => {
-      socket.emit('server-send-conversation-message', tempMessagesStorage)
+      console.log({ roomId })
+      const roomMessages = tempMessagesStorage.find((roomMessage) => roomMessage.id === roomId)
+      console.log({ roomMessages })
+      socket.emit('server-send-conversation-message', roomMessages?.messages ?? [])
     })
   })
 }
