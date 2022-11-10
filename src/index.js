@@ -84,10 +84,7 @@ const bootServer = () => {
 
     socket.on('client-send-message', async (data) => {
       const createdMessage = await ChatService.addMessage(data)
-      console.log({ createdMessage })
-      if (socket.room) {
-        io.sockets.in(socket.room).emit('server-exchange-message', createdMessage)
-      }
+      io.sockets.in(socket.room).emit('server-exchange-message', createdMessage)
     })
 
     socket.on('client-get-conversation-message', (roomId) => {
