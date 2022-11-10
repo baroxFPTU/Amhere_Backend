@@ -7,6 +7,8 @@ import MessageController from './controllers/message.controller'
 import { apiV1 } from './routers/v1/index.js'
 import { connectDB } from './configs/db.js'
 import { env } from './configs/environment.js'
+import { ChatModel } from './models/chat.model'
+import { ChatService } from './services/chat.service'
 
 connectDB().then(() => {
   bootServer()
@@ -34,31 +36,65 @@ const bootServer = () => {
     apiV1
   )
 
-  // app.get('*', (req, res) => {
-  //   res.send('<h1>Hello, welcome to AmHere APIs</h1>')
-  // })
-
   const server = app.listen(env.PORT, env.HOST, () => {
     console.log(`Server running on: http://${env.HOST}:${env.PORT}`)
   })
 
-  const io = new Server(server)
+  let onlineUsers = []
+  let tempMessagesStorage = []
 
-  const onlineUsers = new Map()
+  const io = new Server(server, {
+    cors: {
+      origin: env.SOCKET_CONNECTOR
+    }
+  })
 
   io.on('connection', (socket) => {
-    socket.on('add-user', (userId) => {
-      onlineUsers.set(userId, socket.id)
+    socket.on('disconnect', (roleSlug) => {
+      console.log(socket.id)
+      onlineUsers = onlineUsers.filter((user) => user.socket_id !== socket.id)
+      console.log('out ', onlineUsers)
     })
-    socket.on('send-msg', async (data) => {
-      const sendToUserSocket = onlineUsers.get(data.receiver)
 
-      console.log(data)
+    socket.on('client-auth', (auth) => {
+      socket.user = auth
+      if (onlineUsers.findIndex((user) => user.uid === auth.uid) === -1) {
+        onlineUsers.push({
+          ...auth,
+          socket_id: socket.id
+        })
 
-      await MessageController.addMessageFun(data)
-      if (sendToUserSocket) {
-        socket.to(sendToUserSocket).emit('msg-receive', data)
+        const onlineListeners = onlineUsers.filter(
+          (user) => user.role_data.slug === 'nguoi-lang-nghe'
+        )
+        const onlineTellers = onlineUsers.filter(
+          (user) => user.role_data.slug === 'nguoi-ke-chuyen'
+        )
+
+        io.sockets.emit('server-update-online-listeners', onlineListeners)
+        io.sockets.emit('server-update-online-tellers', onlineTellers)
       }
+    })
+
+    socket.on('client-join-room', (roomId) => {
+      console.log({ roomId })
+      socket.join(roomId)
+      socket.room = roomId
+    })
+
+    socket.on('client-send-message', async (data) => {
+      const createdMessage = await ChatService.addMessage(data)
+      console.log({ createdMessage })
+      if (socket.room) {
+        io.sockets.in(socket.room).emit('server-exchange-message', createdMessage)
+      }
+    })
+
+    socket.on('client-get-conversation-message', (roomId) => {
+      console.log({ roomId })
+      const roomMessages = tempMessagesStorage.find((roomMessage) => roomMessage.id === roomId)
+      console.log({ roomMessages })
+      socket.emit('server-send-conversation-message', roomMessages?.messages ?? [])
     })
   })
 }

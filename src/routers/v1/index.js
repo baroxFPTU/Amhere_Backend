@@ -1,7 +1,7 @@
 import express from 'express'
 import AuthRoute from './auth.route'
-import { ChatRoute } from './chat.route'
-import ConversationRouter from './conversation.route.js'
+import ChatRoute from './chat.route'
+import ConversationRoute from './conversation.route.js'
 import RoleRoute from './role.route'
 import UserRoute from './user.route'
 
@@ -20,7 +20,7 @@ router.use('/users', UserRoute)
 /**
  * Conversations APIs
  */
-router.use('/conversations', ConversationRouter)
+router.use('/conversations', ConversationRoute)
 
 /**
  * Chat APIs

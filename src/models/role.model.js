@@ -32,6 +32,6 @@ export const RoleModel = {
     return await Role.find()
   },
   findOne: async (id) => {
-    return await Role.findOne(id).select('name slug -_id')
+    return await Role.findOne(id).select('name slug _id')
   }
 }

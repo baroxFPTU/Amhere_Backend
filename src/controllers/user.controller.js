@@ -84,10 +84,11 @@ const getUserByName = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    const users = await UserService.findAll()
+    const { role = '' } = req.query
+    const users = await UserService.findAll(role)
 
     res.status(200).json({
-      users: users
+      data: users
     })
   } catch (error) {
     console.log(error)
