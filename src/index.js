@@ -7,6 +7,8 @@ import MessageController from './controllers/message.controller'
 import { apiV1 } from './routers/v1/index.js'
 import { connectDB } from './configs/db.js'
 import { env } from './configs/environment.js'
+import { ChatModel } from './models/chat.model'
+import { ChatService } from './services/chat.service'
 
 connectDB().then(() => {
   bootServer()
@@ -80,21 +82,11 @@ const bootServer = () => {
       socket.room = roomId
     })
 
-    socket.on('client-send-message', (data) => {
-      const isExistRoomMessage = tempMessagesStorage.find(
-        (roomMessage) => roomMessage.id === socket.room
-      )
-      if (!isExistRoomMessage) {
-        tempMessagesStorage.push({
-          id: socket.room,
-          messages: [data]
-        })
-      } else {
-        isExistRoomMessage.messages.push(data)
-      }
-      console.log(tempMessagesStorage)
+    socket.on('client-send-message', async (data) => {
+      const createdMessage = await ChatService.addMessage(data)
+      console.log({ createdMessage })
       if (socket.room) {
-        io.sockets.in(socket.room).emit('server-exchange-message', data)
+        io.sockets.in(socket.room).emit('server-exchange-message', createdMessage)
       }
     })
 

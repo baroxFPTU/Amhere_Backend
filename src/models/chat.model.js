@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose'
+import mongoose, { Error, Types } from 'mongoose'
 import { appDB } from '../configs/db'
 
 const { Schema } = mongoose
@@ -6,9 +6,9 @@ const { Schema } = mongoose
 const messageSchema = new Schema(
   {
     body: { type: String, require: true },
-    senderId: { type: String, require: true },
+    sender_id: { type: String, require: true },
     conversation_id: { type: mongoose.Types.ObjectId, require: true },
-    parent_message_id: { type: mongoose.Types.ObjectId },
+    parent_message_id: { type: mongoose.Types.ObjectId, default: null, nullable: true },
     created_at: { type: Date, default: Date.now }
   },
   {
@@ -26,6 +26,21 @@ export const ChatModel = {
       })
 
       return response
+    } catch (error) {
+      throw error
+    }
+  },
+  addMessage: async (message) => {
+    const { body, sender_id, conversation_id, parent_message_id } = message
+    const newMessage = new Message({
+      body,
+      sender_id,
+      conversation_id: mongoose.Types.ObjectId(conversation_id),
+      parent_message_id
+    })
+    try {
+      const createdMessage = await newMessage.save()
+      return createdMessage
     } catch (error) {
       throw error
     }
