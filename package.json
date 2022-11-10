@@ -33,7 +33,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
-    "start": "node ./node_modules/@babel/node/bin/babel-node.js src/index.js",
+    "start": "node ./build/src/index.js",
     "build": "npm run build-babel",
     "production": "npm run build && node ./build/src/index.js",
     "dev": "nodemon --exec babel-node --es-module-specifier-resolution=node ./src/index.js"
