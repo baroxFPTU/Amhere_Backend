@@ -79,7 +79,7 @@ export const UserModel = {
     return await User.find({ role_id: roleData._id })
   },
   findOneByUid: async (uid) => {
-    return await User.findOne({ uid: uid })
+    return await User.findOne({ uid: uid }, { created_at: 0, updated_at: 0, _id: 0 })
   }
 }
 

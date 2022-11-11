@@ -2,24 +2,43 @@ import { ConversationModel } from '../models/conversation.model'
 import { UserModel } from '../models/user.model'
 
 export const ConversationService = {
-  getAllChat: async (uid) => {
+  getAllConversation: async (uid) => {
     try {
-      return await ConversationModel.getAllChat(uid)
+      const conversations = await ConversationModel.getAllConversation(uid)
+      return await Promise.all(
+        conversations.map((conversation) => filterCurrentUserInParticipants(conversation, uid))
+      )
     } catch (error) {
       throw error
     }
   },
-  getChatWith: async (uid, chatWithUid) => {
+  getConversationWith: async (uid, chatWithUid) => {
     try {
-      let response = await ConversationModel.getChatWith(uid, chatWithUid)
+      let response = await ConversationModel.getConversationWith(uid, chatWithUid)
       const isExist = response.length !== 0
       if (!isExist) {
-        return await ConversationModel.create(uid, chatWithUid)
+        const createdConversation = await ConversationModel.create(uid, chatWithUid)
+        return await filterCurrentUserInParticipants(createdConversation, uid)
       }
-      return response[0]
+      return await filterCurrentUserInParticipants(response[0], uid)
     } catch (error) {
       console.log(error)
       throw error
     }
   }
+}
+
+async function filterCurrentUserInParticipants(conversations, uid) {
+  const filteredConversations = conversations
+  filteredConversations.participants = filteredConversations.participants.filter(
+    (participant) => participant !== uid
+  )
+
+  filteredConversations.participants = await Promise.all(
+    filteredConversations.participants.map((participant) => {
+      return UserModel.findOneByUid(participant)
+    })
+  )
+
+  return await filteredConversations
 }

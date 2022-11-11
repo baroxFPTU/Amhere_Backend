@@ -22,6 +22,9 @@ export const Conversation = appDB.model('Conversation', conversationSchema)
 export const ConversationModel = {
   create: async (uid, chatWithUid) => {
     try {
+      if (!uid || !chatWithUid) {
+        throw new Error('Missing conversation participant')
+      }
       const newConversation = new Conversation({
         creator_uid: uid,
         participants: [uid, chatWithUid],
@@ -34,7 +37,7 @@ export const ConversationModel = {
       throw error
     }
   },
-  getChatWith: async (uid, chatWithUid) => {
+  getConversationWith: async (uid, chatWithUid) => {
     try {
       const response = await Conversation.find({
         participants: { $all: [uid, chatWithUid] }
@@ -45,7 +48,7 @@ export const ConversationModel = {
       throw error
     }
   },
-  getAllChat: async (uid) => {
+  getAllConversation: async (uid) => {
     try {
       const response = await Conversation.find({
         participants: { $all: [uid] }
@@ -55,5 +58,6 @@ export const ConversationModel = {
     } catch (error) {
       throw error
     }
-  }
+  },
+  updateLastMessage: async (message) => {}
 }

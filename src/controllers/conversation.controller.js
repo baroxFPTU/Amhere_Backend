@@ -5,16 +5,18 @@ import { ConversationService } from '../services/conversation.service'
 const ObjectId = mongoose.Types.ObjectId
 
 export const ConversationController = {
-  getChatWith: async (req, res) => {
+  getConversationWith: async (req, res) => {
     const { uid, cw: chatWithUid } = req.query
     try {
       if (!chatWithUid) {
-        const conversations = await ConversationService.getAllChat(uid)
+        const conversations = await ConversationService.getAllConversation(uid)
         return res.status(200).json([...conversations])
       }
-      const conversation = await ConversationService.getChatWith(uid, chatWithUid)
+      const conversation = await ConversationService.getConversationWith(uid, chatWithUid)
       res.status(200).json(conversation)
     } catch (error) {
+      console.log(error)
+
       res.status(400).json({
         errors: error
       })

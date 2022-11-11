@@ -2,6 +2,6 @@ import express from 'express'
 import { ConversationController } from '../../controllers/conversation.controller'
 const ConversationRoute = express.Router()
 
-ConversationRoute.get('/', ConversationController.getChatWith)
+ConversationRoute.get('/', ConversationController.getConversationWith)
 
 export default ConversationRoute
