@@ -76,10 +76,13 @@ export const UserModel = {
   },
   findAll: async (roleSlug) => {
     const roleData = await RoleModel.findOne({ slug: roleSlug })
-    return await User.find({ role_id: roleData._id })
+    return await User.find({ role_id: roleData._id }, { _id: 0 })
   },
   findOneByUid: async (uid) => {
     return await User.findOne({ uid: uid }, { created_at: 0, updated_at: 0, _id: 0 })
+  },
+  isUserExists: async (uid) => {
+    return Boolean(await User.findOne({ uid: uid }))
   }
 }
 

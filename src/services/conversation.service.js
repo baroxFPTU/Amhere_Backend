@@ -2,9 +2,9 @@ import { ConversationModel } from '../models/conversation.model'
 import { UserModel } from '../models/user.model'
 
 export const ConversationService = {
-  getAllConversation: async (uid) => {
+  getAllConversations: async (uid) => {
     try {
-      const conversations = await ConversationModel.getAllConversation(uid)
+      const conversations = await ConversationModel.getAllConversations(uid)
       return await Promise.all(
         conversations.map((conversation) => filterCurrentUserInParticipants(conversation, uid))
       )
@@ -32,7 +32,7 @@ export const ConversationService = {
 async function filterCurrentUserInParticipants(conversations, uid) {
   const filteredConversations = conversations
   filteredConversations.participants = filteredConversations.participants.filter(
-    (participant) => participant !== uid
+    (participant) => participant != null && participant !== uid
   )
 
   filteredConversations.participants = await Promise.all(

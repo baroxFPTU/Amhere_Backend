@@ -7,7 +7,7 @@ const { Schema } = mongoose
 const conversationSchema = new Schema(
   {
     creator_uid: { type: String, require: true },
-    participants: { type: Array },
+    participants: { type: Array, require: true },
     last_message_id: { type: String },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: null }
@@ -48,7 +48,7 @@ export const ConversationModel = {
       throw error
     }
   },
-  getAllConversation: async (uid) => {
+  getAllConversations: async (uid) => {
     try {
       const response = await Conversation.find({
         participants: { $all: [uid] }
