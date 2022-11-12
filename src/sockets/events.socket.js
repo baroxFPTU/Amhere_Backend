@@ -3,9 +3,13 @@ import { ChatService } from '../services/chat.service'
 let onlineUsers = []
 let tempMessagesStorage = []
 
+export let socketInstance = null
+
 export function EventSocketHandler(io) {
   io.on('connection', (socket) => {
+    socketInstance = socket
     socket.on('disconnect', (roleSlug) => {
+      socketInstance = null
       onlineUsers = onlineUsers.filter((user) => user.socket_id !== socket.id)
     })
 

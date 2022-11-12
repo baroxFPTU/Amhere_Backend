@@ -25,7 +25,8 @@ export const ConversationService = {
       console.log(error)
       throw error
     }
-  }
+  },
+  updateLastMessage(lastMessageId) {}
 }
 
 async function filterCurrentUserInParticipants(conversations, uid) {

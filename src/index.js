@@ -3,12 +3,10 @@ import morgan from 'morgan'
 import express from 'express'
 import { Server } from 'socket.io'
 
-import MessageController from './controllers/message.controller'
 import { apiV1 } from './routers/v1/index.js'
 import { connectDB } from './configs/db.js'
 import { env } from './configs/environment.js'
-import { ChatModel } from './models/chat.model'
-import { ChatService } from './services/chat.service'
+
 import { EventSocketHandler } from './sockets/events.socket'
 
 connectDB().then(() => {

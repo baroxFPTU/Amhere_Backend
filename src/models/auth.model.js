@@ -38,6 +38,7 @@ export const AuthModel = {
   registerWithPassword: async (user) => {
     const createdUser = await UserModel.add(user)
     return {
+      id: createdUser.uid,
       role_data: createdUser.role_data,
       photoURL: createdUser.photoURL,
       nickname: createdUser.nickname
