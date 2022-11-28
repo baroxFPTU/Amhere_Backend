@@ -8,5 +8,13 @@ export const UserService = {
     } catch (error) {
       throw error
     }
+  },
+  findOneByUid: async (uid) => {
+    try {
+      const user = await UserModel.findOneByUid(uid)
+      return user
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -5,13 +5,12 @@ import { addRoleData, UserModel } from './user.model'
 export const AuthModel = {
   loginWithPassword: async (uid) => {
     try {
-      const response = await UserModel.findOneByUid(uid)
-      const addedRoleUser = await addRoleData(response)
+      const user = await UserModel.findOneByUid(uid)
       return {
         id: uid,
-        role_data: addedRoleUser.role_data,
-        nickname: addedRoleUser.nickname,
-        photoURL: addedRoleUser.photoURL
+        role_data: user.role_data,
+        nickname: user.nickname,
+        photoURL: user.photoURL
       }
     } catch (error) {
       throw error

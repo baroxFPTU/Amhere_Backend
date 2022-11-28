@@ -76,10 +76,13 @@ export const UserModel = {
   },
   findAll: async (roleSlug) => {
     const roleData = await RoleModel.findOne({ slug: roleSlug })
-    return await User.find({ role_id: roleData._id }, { _id: 0 })
+    return await User.find({ role_id: roleData?._id }, { _id: 0 })
   },
   findOneByUid: async (uid) => {
-    return await User.findOne({ uid: uid }, { created_at: 0, updated_at: 0, _id: 0 })
+    const user = await User.findOne({ uid: uid }, { created_at: 0, updated_at: 0, _id: 0 })
+    const addedRoleUser = await addRoleData(user)
+    console.log(addedRoleUser)
+    return addedRoleUser
   },
   isUserExists: async (uid) => {
     return Boolean(await User.findOne({ uid: uid }))
@@ -89,11 +92,14 @@ export const UserModel = {
 export async function addRoleData(user) {
   try {
     if (!user) throw new Error('Cannot add role for user')
-    const addedUser = user
+    const addedUser = { ...user._doc }
     const roleData = addedUser.role_id ? await RoleModel.findOne(addedUser.role_id) : null
     addedUser.role_data = roleData
+    console.log({ addedUser })
     if (user.role_id) {
       delete addedUser.role_id
+      console.log('remove role_id')
+      console.log({ addedUser })
     }
     return addedUser
   } catch (error) {
