@@ -33,5 +33,8 @@ export const RoleModel = {
   },
   findOne: async (id) => {
     return await Role.findOne(id).select('name slug _id')
+  },
+  findOneBySlug: async (slug) => {
+    return await Role.findOne({ slug: slug }).select('name slug _id')
   }
 }

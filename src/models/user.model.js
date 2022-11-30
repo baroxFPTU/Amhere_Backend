@@ -29,6 +29,7 @@ const userSchema = new Schema(
 export const userSchemaYup = yup.object().shape({
   uid: yup.string().required('uid is required'),
   nickname: yup.string().required(),
+  bio: yup.string().nullable(),
   birthday: yup.date(),
   phone: yup.string().nullable(),
   email: yup.string().required(),
@@ -55,6 +56,7 @@ export const User = appDB.model('User', userSchema)
 export const UserModel = {
   add: async (user) => {
     try {
+      // Add gender
       const { uid, nickname, email, phone, photoURL, birthday, role_id = null } = user
       const createdUser = new User({
         uid,
@@ -81,25 +83,32 @@ export const UserModel = {
   findOneByUid: async (uid) => {
     const user = await User.findOne({ uid: uid }, { created_at: 0, updated_at: 0, _id: 0 })
     const addedRoleUser = await addRoleData(user)
-    console.log(addedRoleUser)
     return addedRoleUser
   },
   isUserExists: async (uid) => {
     return Boolean(await User.findOne({ uid: uid }))
+  },
+  updateOneByUid: async (uid, data) => {
+    const filter = { uid: uid }
+    console.log({ data })
+    data.updated_at = Date.now()
+    const updatedUser = await User.findOneAndUpdate(filter, data, {
+      new: true,
+      lean: true
+    })
+    return updatedUser
   }
 }
 
 export async function addRoleData(user) {
   try {
     if (!user) throw new Error('Cannot add role for user')
-    const addedUser = { ...user._doc }
+    console.log({ user })
+    const addedUser = { ...(user._doc || user) }
     const roleData = addedUser.role_id ? await RoleModel.findOne(addedUser.role_id) : null
     addedUser.role_data = roleData
-    console.log({ addedUser })
     if (user.role_id) {
       delete addedUser.role_id
-      console.log('remove role_id')
-      console.log({ addedUser })
     }
     return addedUser
   } catch (error) {

@@ -1,4 +1,5 @@
-import { UserModel } from '../models/user.model'
+import { RoleModel } from '../models/role.model'
+import { addRoleData, UserModel } from '../models/user.model'
 
 export const UserService = {
   findAll: async (roleSlug) => {
@@ -13,6 +14,30 @@ export const UserService = {
     try {
       const user = await UserModel.findOneByUid(uid)
       return user
+    } catch (error) {
+      throw error
+    }
+  },
+  updateOneByUid: async (uid, data) => {
+    try {
+      /**
+       * Validate:
+          + slug
+          + schema
+          + uid
+       */
+      const roleSlug = data.role_data.slug
+      const role = await RoleModel.findOneBySlug(roleSlug)
+
+      if (role) {
+        data.role_id = role._id
+      }
+
+      const updatedUser = await UserModel.updateOneByUid(uid, data)
+      delete updatedUser.updated_at
+      delete updatedUser.created_at
+
+      return await addRoleData(updatedUser)
     } catch (error) {
       throw error
     }
