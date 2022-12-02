@@ -9,8 +9,8 @@ const { env } = require('./configs/environment.js')
 
 const { EventSocketHandler } = require('./sockets/events.socket')
 
-connectDB().then(() => {
-  bootServer()
+const app = connectDB().then(() => {
+  return bootServer()
 })
 
 const bootServer = () => {
@@ -19,7 +19,7 @@ const bootServer = () => {
   app.use(morgan('tiny'))
   app.use(express.json({ limit: '30mb', extended: 'false' }))
   app.use(express.urlencoded({ limit: '30mb', extended: 'true' }))
-
+  app.use(express.static('public'))
   app.use(
     cors({
       origin: '*'
@@ -35,6 +35,10 @@ const bootServer = () => {
     apiV1
   )
 
+  app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: path.join(__dirname, 'public') })
+  })
+
   const server = app.listen(env.PORT, env.HOST, () => {
     console.log(`Server running on: http://${env.HOST}:${env.PORT}`)
   })
@@ -46,4 +50,8 @@ const bootServer = () => {
   })
 
   EventSocketHandler(io)
+
+  return app
 }
+
+module.exports = app
