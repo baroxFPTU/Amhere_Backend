@@ -2,7 +2,7 @@
   "name": "amhere_backend",
   "version": "1.0.0",
   "description": "�",
-  "main": "src/index.js",
+  "main": "index.js",
   "engines": {
     "node": "16.x"
   },
@@ -38,8 +38,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del build && mkdir build",
-    "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
