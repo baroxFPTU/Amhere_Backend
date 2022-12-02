@@ -1,10 +1,10 @@
-import mongoose from 'mongoose'
-import { appDB, userCollection } from '../configs/db'
-import uniqueValidator from 'mongoose-unique-validator'
-import * as yup from 'yup'
-import { env } from '../configs/environment'
-import { RoleModel } from './role.model'
-import moment from 'moment'
+const mongoose = require('mongoose')
+const { appDB, userCollection } = require('../configs/db')
+const uniqueValidator = require('mongoose-unique-validator')
+const yup = require('yup')
+const { env } = require('../configs/environment')
+const { RoleModel } = require('./role.model')
+const moment = require('moment')
 
 const { Schema } = mongoose
 
@@ -26,7 +26,7 @@ const userSchema = new Schema(
   }
 )
 
-export const userSchemaYup = yup.object().shape({
+const userSchemaYup = yup.object().shape({
   uid: yup.string().required('uid is required'),
   nickname: yup.string().required(),
   bio: yup.string().nullable(),
@@ -51,9 +51,9 @@ export const userSchemaYup = yup.object().shape({
 
 userSchema.plugin(uniqueValidator)
 
-export const User = appDB.model('User', userSchema)
+const User = appDB.model('User', userSchema)
 
-export const UserModel = {
+const UserModel = {
   add: async (user) => {
     try {
       // Add gender
@@ -100,7 +100,7 @@ export const UserModel = {
   }
 }
 
-export async function addRoleData(user) {
+async function addRoleData(user) {
   try {
     if (!user) throw new Error('Cannot add role for user')
     console.log({ user })
@@ -114,4 +114,11 @@ export async function addRoleData(user) {
   } catch (error) {
     throw error
   }
+}
+
+module.exports = {
+  addRoleData,
+  User,
+  UserModel,
+  userSchemaYup
 }

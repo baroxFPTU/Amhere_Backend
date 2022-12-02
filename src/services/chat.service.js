@@ -1,6 +1,6 @@
-import { ChatModel } from '../models/chat.model'
+const { ChatModel } = require('../models/chat.model')
 
-export const ChatService = {
+module.exports.ChatService = {
   getMessageByConversationId: async (conversationId) => {
     try {
       return await ChatModel.getMessageByConversationId(conversationId)

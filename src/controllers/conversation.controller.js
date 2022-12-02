@@ -1,10 +1,9 @@
-import Converstation from '~/models/converstationSchema'
-import mongoose from 'mongoose'
-import User from '../models/userSchema'
-import { ConversationService } from '../services/conversation.service'
+const mongoose = require('mongoose')
+const User = require('../models/userSchema')
+const { ConversationService } = require('../services/conversation.service')
 const ObjectId = mongoose.Types.ObjectId
 
-export const ConversationController = {
+module.exports.ConversationController = {
   getConversationWith: async (req, res) => {
     const { uid, cw: chatWithUid } = req.query
     try {

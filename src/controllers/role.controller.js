@@ -1,10 +1,10 @@
-import { RoleService } from '../services/role.service'
+const { RoleService } = require('../services/role.service')
 
-export const RoleController = {
+module.exports.RoleController = {
   findAll: async (req, res) => {
     try {
       const roles = await RoleService.findAll()
-      res.json( roles).status(200)
+      res.json(roles).status(200)
     } catch (error) {
       console.error(error)
       res

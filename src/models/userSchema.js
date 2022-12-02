@@ -1,5 +1,7 @@
-import mongoose, { Schema } from 'mongoose'
-import { env } from '../configs/environment'
+const mongoose = require('mongoose')
+const { env } = require('../configs/environment')
+
+const { Schema } = mongoose
 
 const userSchema = new Schema({
   email: String,
@@ -14,4 +16,8 @@ const userSchema = new Schema({
 })
 
 const myDB = mongoose.connection.useDb(env.DB_NAME)
-export const User = myDB.model('user', userSchema)
+const User = myDB.model('user', userSchema)
+
+module.exports = {
+  User
+}

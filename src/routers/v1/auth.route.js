@@ -1,6 +1,6 @@
-import express from 'express'
-import { AuthController } from '../../controllers/auth.controller'
-import { AuthValidation } from '../../validations/auth.validation'
+const express = require('express')
+const { AuthController } = require('../../controllers/auth.controller')
+const { AuthValidation } = require('../../validations/auth.validation')
 
 const AuthRoute = express.Router()
 
@@ -12,4 +12,5 @@ AuthRoute.route('/register-with-password').post(
 )
 
 AuthRoute.route('/login-with-provider').post(AuthController.loginWithProvider)
-export default AuthRoute
+
+module.exports = AuthRoute

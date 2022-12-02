@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
-import { appDB } from '../configs/db'
-import { UserModel } from './user.model'
+const mongoose = require('mongoose')
+const { appDB } = require('../configs/db')
+const { UserModel } = require('./user.model')
 
 const { Schema } = mongoose
 
@@ -17,9 +17,9 @@ const conversationSchema = new Schema(
   }
 )
 
-export const Conversation = appDB.model('Conversation', conversationSchema)
+const Conversation = appDB.model('Conversation', conversationSchema)
 
-export const ConversationModel = {
+const ConversationModel = {
   create: async (uid, chatWithUid) => {
     try {
       if (!uid || !chatWithUid) {
@@ -60,4 +60,9 @@ export const ConversationModel = {
     }
   },
   updateLastMessage: async (message) => {}
+}
+
+module.exports = {
+  Conversation,
+  ConversationModel
 }

@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken'
-import { AuthService } from '../services/auth.service'
+const jwt = require('jsonwebtoken')
+const { AuthService } = require('../services/auth.service')
 
-export const AuthController = {
+module.exports.AuthController = {
   loginWithPassword: async (req, res) => {
     try {
       const { token } = req.body

@@ -1,11 +1,11 @@
-import * as yup from 'yup'
-import { userSchemaYup } from '../models/user.model'
+const yup = require('yup')
+const { userSchemaYup } = require('../models/user.model')
 
 const yupSchema = yup.object().shape({
   nickname: yup.string().required()
 })
 
-export const AuthValidation = {
+const AuthValidation = {
   login: (req, res, next) => {
     const { token } = req.body
     if (!token) res.status(400).json({ errors: { message: 'Token is required.' } })
@@ -20,4 +20,8 @@ export const AuthValidation = {
       res.status(400).json({ errors: error?.errors || error.message })
     }
   }
+}
+
+module.exports = {
+  AuthValidation
 }

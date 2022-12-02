@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
-import { appDB } from '../configs/db'
+const { Schema } = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+const { appDB } = require('../configs/db')
 
 const roleSchema = new Schema({
   name: { type: String, required: true },
@@ -9,9 +9,9 @@ const roleSchema = new Schema({
 })
 roleSchema.plugin(uniqueValidator)
 
-export const Role = appDB.model('Role', roleSchema)
+const Role = appDB.model('Role', roleSchema)
 
-export const RoleModel = {
+const RoleModel = {
   add: async ({ name, slug }) => {
     try {
       const createdRole = new Role({ name, slug })
@@ -37,4 +37,9 @@ export const RoleModel = {
   findOneBySlug: async (slug) => {
     return await Role.findOne({ slug: slug }).select('name slug _id')
   }
+}
+
+module.exports = {
+  Role,
+  RoleModel
 }

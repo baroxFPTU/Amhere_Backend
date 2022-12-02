@@ -1,13 +1,13 @@
-import cors from 'cors'
-import morgan from 'morgan'
-import express from 'express'
-import { Server } from 'socket.io'
+const cors = require('cors')
+const morgan = require('morgan')
+const express = require('express')
+const { Server } = require('socket.io')
 
-import { apiV1 } from './routers/v1/index.js'
-import { connectDB } from './configs/db.js'
-import { env } from './configs/environment.js'
+const { apiV1 } = require('./routers/v1/index.js')
+const { connectDB } = require('./configs/db.js')
+const { env } = require('./configs/environment.js')
 
-import { EventSocketHandler } from './sockets/events.socket'
+const { EventSocketHandler } = require('./sockets/events.socket')
 
 connectDB().then(() => {
   bootServer()
