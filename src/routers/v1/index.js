@@ -1,9 +1,9 @@
-import express from 'express'
-import AuthRoute from './auth.route'
-import ChatRoute from './chat.route'
-import ConversationRoute from './conversation.route.js'
-import RoleRoute from './role.route'
-import UserRoute from './user.route'
+const express = require('express')
+const AuthRoute = require('./auth.route')
+const ChatRoute = require('./chat.route')
+const ConversationRoute = require('./conversation.route.js')
+const RoleRoute = require('./role.route')
+const UserRoute = require('./user.route')
 
 const router = express.Router()
 
@@ -39,4 +39,6 @@ router.use('/', (req, res) => {
   res.send('<h1>Hello, welcome to AmHere APIs</h1>')
 })
 
-export const apiV1 = router
+module.exports = {
+  apiV1: router
+}

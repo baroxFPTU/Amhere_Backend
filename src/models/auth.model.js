@@ -1,8 +1,8 @@
-import mongoose from 'mongoose'
-import { userCollection } from '../configs/db'
-import { addRoleData, UserModel } from './user.model'
+const mongoose = require('mongoose')
+const { userCollection } = require('../configs/db')
+const { addRoleData, UserModel } = require('./user.model')
 
-export const AuthModel = {
+module.exports.AuthModel = {
   loginWithPassword: async (uid) => {
     try {
       const user = await UserModel.findOneByUid(uid)

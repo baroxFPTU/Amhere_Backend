@@ -1,6 +1,6 @@
-import { ChatService } from '../services/chat.service'
+const { ChatService } = require('../services/chat.service')
 
-export const ChatController = {
+module.exports.ChatController = {
   getMessageByConversationId: async (req, res) => {
     const { id: conversationId } = req.query
     try {

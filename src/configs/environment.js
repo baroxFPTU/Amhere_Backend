@@ -1,8 +1,8 @@
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 
 dotenv.config()
 
-export const env = {
+module.exports.env = {
   HOST: process.env.HOST,
   PORT: process.env.PORT,
   DB_URI: process.env.DB_URI,

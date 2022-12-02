@@ -1,6 +1,6 @@
-import { userSchemaYup } from '../models/user.model'
+const { userSchemaYup } = require('../models/user.model')
 
-export const UserValidation = {
+module.exports.UserValidation = {
   updateOneByUid: async (req, res, next) => {
     const { uid } = req.params
     const data = req.body

@@ -1,6 +1,6 @@
-import express from 'express'
-import { UserController } from '~/controllers/user.controller'
-import { UserValidation } from '../../validations/user.validation'
+const express = require('express')
+const { UserController } = require('~/controllers/user.controller')
+const { UserValidation } = require('../../validations/user.validation')
 
 const UserRoute = express.Router()
 
@@ -8,4 +8,4 @@ UserRoute.put('/:uid?', UserValidation.updateOneByUid, UserController.updateOneB
 UserRoute.get('/:uid', UserController.findOneByUid)
 UserRoute.get('/', UserController.findAll)
 
-export default UserRoute
+module.exports = UserRoute

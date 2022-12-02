@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
-import { AuthModel } from '../models/auth.model'
+const mongoose = require('mongoose')
+const { AuthModel } = require('../models/auth.model')
 
-export const AuthService = {
+module.exports.AuthService = {
   loginWithPassword: async (uid) => {
     try {
       return await AuthModel.loginWithPassword(uid)

@@ -1,6 +1,6 @@
-import express from 'express'
-import { ConversationController } from '../../controllers/conversation.controller'
-import { ConversationValidation } from '../../validations/conversation.validation'
+const express = require('express')
+const { ConversationController } = require('../../controllers/conversation.controller')
+const { ConversationValidation } = require('../../validations/conversation.validation')
 const ConversationRoute = express.Router()
 
 ConversationRoute.get(
@@ -15,4 +15,4 @@ ConversationRoute.get(
   ConversationController.getAllConversations
 )
 
-export default ConversationRoute
+module.exports = ConversationRoute

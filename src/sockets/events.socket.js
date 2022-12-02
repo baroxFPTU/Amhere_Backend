@@ -1,11 +1,11 @@
-import { ChatService } from '../services/chat.service'
-
+const { ChatService } = require('../services/chat.service')
+const { regexp } = require('vn-badwords')
+const { badWordRegex } = require('../utils/badWordCheck')
 let onlineUsers = []
 let tempMessagesStorage = []
+let socketInstance = null
 
-export let socketInstance = null
-
-export function EventSocketHandler(io) {
+function EventSocketHandler(io) {
   io.on('connection', (socket) => {
     socketInstance = socket
     socket.on('disconnect', (roleSlug) => {
@@ -39,8 +39,13 @@ export function EventSocketHandler(io) {
     })
 
     socket.on('client-send-message', async (data) => {
-      const createdMessage = await ChatService.addMessage(data)
-      io.sockets.in(socket.room).emit('server-exchange-message', data)
+      const messageBody = data.body
+      const isValid = messageBody.match(badWordRegex) === null
+      if (isValid) {
+        console.log({ createdMessage: messageBody })
+        const createdMessage = await ChatService.addMessage(data)
+        io.sockets.in(socket.room).emit('server-exchange-message', data)
+      }
     })
 
     socket.on('client-get-conversation-message', (roomId) => {
@@ -48,4 +53,9 @@ export function EventSocketHandler(io) {
       socket.emit('server-send-conversation-message', roomMessages?.messages ?? [])
     })
   })
+}
+
+module.exports = {
+  socketInstance,
+  EventSocketHandler
 }

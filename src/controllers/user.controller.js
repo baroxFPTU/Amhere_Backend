@@ -1,9 +1,6 @@
-import Listener from '../models/listenerSchema'
-import Member from '../models/memberSchema'
-import User from '../models/userSchema'
-import { UserService } from '../services/user.service'
+const { UserService } = require('../services/user.service')
 
-export const UserController = {
+module.exports.UserController = {
   findAll: async (req, res) => {
     try {
       const { role = '' } = req.query

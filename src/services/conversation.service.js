@@ -1,7 +1,7 @@
-import { ConversationModel } from '../models/conversation.model'
-import { UserModel } from '../models/user.model'
+const { ConversationModel } = require('../models/conversation.model')
+const { UserModel } = require('../models/user.model')
 
-export const ConversationService = {
+module.exports.ConversationService = {
   getAllConversations: async (uid) => {
     try {
       const conversations = await ConversationModel.getAllConversations(uid)

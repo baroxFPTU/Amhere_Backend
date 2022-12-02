@@ -1,7 +1,7 @@
-import { RoleModel } from '../models/role.model'
-import slugify from 'slugify'
+const { RoleModel } = require('../models/role.model')
+const slugify = require('slugify')
 
-export const RoleService = {
+module.exports.RoleService = {
   findAll: async () => {
     try {
       const roles = await RoleModel.findAll()

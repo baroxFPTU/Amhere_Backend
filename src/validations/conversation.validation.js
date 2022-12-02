@@ -1,6 +1,6 @@
-import { User, UserModel } from '../models/user.model'
+const { User, UserModel } = require('../models/user.model')
 
-export const ConversationValidation = {
+module.exports.ConversationValidation = {
   getConversationWith: async (req, res, next) => {
     try {
       const { uid, cw } = req.query

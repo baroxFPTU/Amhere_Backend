@@ -1,7 +1,7 @@
-import { RoleModel } from '../models/role.model'
-import { addRoleData, UserModel } from '../models/user.model'
+const { RoleModel } = require('../models/role.model')
+const { addRoleData, UserModel } = require('../models/user.model')
 
-export const UserService = {
+module.exports.UserService = {
   findAll: async (roleSlug) => {
     try {
       const lsUsers = await UserModel.findAll(roleSlug)

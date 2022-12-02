@@ -1,5 +1,5 @@
-import mongoose, { Error, Types } from 'mongoose'
-import { appDB } from '../configs/db'
+const mongoose = require('mongoose')
+const { appDB } = require('../configs/db')
 
 const { Schema } = mongoose
 
@@ -16,9 +16,9 @@ const messageSchema = new Schema(
   }
 )
 
-export const Message = appDB.model('message', messageSchema)
+const Message = appDB.model('message', messageSchema)
 
-export const ChatModel = {
+const ChatModel = {
   getMessageByConversationId: async (conversationId) => {
     try {
       const response = await Message.find({
@@ -45,4 +45,9 @@ export const ChatModel = {
       throw error
     }
   }
+}
+
+module.exports = {
+  Message,
+  ChatModel
 }

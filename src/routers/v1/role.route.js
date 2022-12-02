@@ -1,5 +1,5 @@
-import express from 'express'
-import { RoleController } from '~/controllers/role.controller'
+const express = require('express')
+const { RoleController } = require('~/controllers/role.controller')
 
 const RoleRoute = express.Router()
 
@@ -8,4 +8,4 @@ RoleRoute.route('/')
   .post(RoleController.add)
   .delete(RoleController.delete)
 
-export default RoleRoute
+module.exports = RoleRoute

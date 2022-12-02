@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
-import { env } from './environment'
+const mongoose = require('mongoose')
+const { env } = require('./environment')
 
-export const connectDB = () => {
+const connectDB = () => {
   return new Promise((resolve, reject) => {
     mongoose
       .connect(env.DB_URI, {
@@ -16,5 +16,11 @@ export const connectDB = () => {
   })
 }
 
-export const appDB = mongoose.connection.useDb('amhere_database')
-export const userCollection = appDB.collection('users')
+const appDB = mongoose.connection.useDb('amhere_database')
+const userCollection = appDB.collection('users')
+
+module.exports = {
+  connectDB,
+  appDB,
+  userCollection
+}
