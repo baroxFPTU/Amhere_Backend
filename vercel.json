@@ -1,6 +1,15 @@
 {
   "version": 2,
-  "name": "amhere_backend",
-  "builds": [{ "src": "build/src/index.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/build/(.*)", "dest": "/build/src/index.js" }]
+  "builds": [
+    {
+      "src": "./src/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/src(.*)",
+      "dest": "/src"
+    }
+  ]
 }
