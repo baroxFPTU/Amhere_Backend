@@ -92,10 +92,18 @@ const UserModel = {
     const filter = { uid: uid }
     console.log({ data })
     data.updated_at = Date.now()
-    const updatedUser = await User.findOneAndUpdate(filter, data, {
-      new: true,
-      lean: true
-    })
+    const updatedUser = await User.findOneAndUpdate(
+      filter,
+      {
+        $set: {
+          ...data
+        }
+      },
+      {
+        new: true,
+        lean: true
+      }
+    )
     return updatedUser
   }
 }
