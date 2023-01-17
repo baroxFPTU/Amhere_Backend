@@ -7,7 +7,12 @@ module.exports.AuthModel = {
     try {
       const user = await UserModel.findOneByUid(uid)
       return {
-        id: uid,
+        uid: uid,
+        email: user.email,
+        password: user.password,
+        phone: user.phone,
+        birthday: user.birthday,
+        categories: user.categories,
         role_data: user.role_data,
         nickname: user.nickname,
         photoURL: user.photoURL
@@ -37,10 +42,15 @@ module.exports.AuthModel = {
   registerWithPassword: async (user) => {
     const createdUser = await UserModel.add(user)
     return {
-      id: createdUser.uid,
+      uid: createdUser.uid,
+      email: createdUser.email,
+      password: createdUser.password,
+      phone: createdUser.phone,
+      birthday: createdUser.birthday,
+      categories: createdUser.categories,
       role_data: createdUser.role_data,
-      photoURL: createdUser.photoURL,
-      nickname: createdUser.nickname
+      nickname: createdUser.nickname,
+      photoURL: createdUser.photoURL
     }
   }
 }
